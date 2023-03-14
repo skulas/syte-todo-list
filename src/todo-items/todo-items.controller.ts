@@ -10,23 +10,29 @@ import {
 import { TodoItemsService } from './todo-items.service';
 import { CreateTodoItemDto } from './dto/create-todo-item.dto';
 import { UpdateTodoItemDto } from './dto/update-todo-item.dto';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { TodoItemEntity } from './entities/todo-item.entity';
 
 @Controller('todo-items')
+@ApiTags('todo-items')
 export class TodoItemsController {
   constructor(private readonly todoItemsService: TodoItemsService) {}
 
   @Post()
+  @ApiCreatedResponse({ type: TodoItemEntity })
   create(@Body() createTodoItemDto: CreateTodoItemDto) {
     createTodoItemDto.owner = 1; // JWT: Should be used according to authorised user
     return this.todoItemsService.create(createTodoItemDto);
   }
 
   @Get()
+  @ApiOkResponse({ type: TodoItemEntity, isArray: true })
   findAll() {
     return this.todoItemsService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: TodoItemEntity })
   findOne(@Param('id') id: number) {
     return this.todoItemsService.findOne(+id);
   }
