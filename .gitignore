@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-=======
 # compiled output
 /dist
 /node_modules
 
->>>>>>> 2d705a7 (add gitignore to repo)
 # Logs
 logs
 *.log
