@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -21,8 +21,8 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('test-auth')
-  getCheckAuth(): string {
-    return 'You are logged in';
+  getCheckAuth(@Req() req: any): string {
+    return `You are logged in as ${req.user.email}`;
   }
 
   @UseGuards(LocalAuthGuard)

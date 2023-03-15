@@ -23,39 +23,48 @@ export class TodoItemsController {
   constructor(private readonly todoItemsService: TodoItemsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: TodoItemEntity })
-  create(@Body() createTodoItemDto: CreateTodoItemDto) {
-    createTodoItemDto.owner = 1; // JWT: Should be used according to authorised user
+  create(@Body() createTodoItemDto: CreateTodoItemDto, @Req() req: any) {
+    // Cast not needed, adding it for clarity.
+    const user = <UserDto>req.user;
+    createTodoItemDto.owner = user.id;
     return this.todoItemsService.create(createTodoItemDto);
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: TodoItemEntity, isArray: true })
-  findAll(@Req() req: any,) {
+  findAll(@Req() req: any) {
     const user = <UserDto>req.user;
-    return this.todoItemsService.findAll();
+    return this.todoItemsService.findAll(user.id);
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: TodoItemEntity })
-  findOne(@Param('id') id: number) {
-    return this.todoItemsService.findOne(+id);
+  // This API is not needed, just added it for practice and validation.
+  findOne(@Param('id') id: number, @Req() req: any) {
+    const user = <UserDto>req.user;
+    return this.todoItemsService.findOne(+id, user.id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id') id: string,
     @Body() updateTodoItemDto: UpdateTodoItemDto,
+    @Req() req: any,
   ) {
-    updateTodoItemDto.owner = 1; // JWT: Should be used from jwt once implemented
+    updateTodoItemDto.owner = req.user.id;
     return this.todoItemsService.update(+id, updateTodoItemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  @UseGuards(JwtAuthGuard)
+  remove(@Param('id') id: number, @Req() req: any) {
     // NOTE: better implement DeletedAt column logic, for data insights.
-    const owner_id = 1; // JWT: Should be set through auth
+    const owner_id = req.user.id;
     return this.todoItemsService.remove(+id, owner_id);
   }
 }

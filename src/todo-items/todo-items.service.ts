@@ -17,15 +17,23 @@ export class TodoItemsService {
     });
   }
 
-  findAll() {
+  findAll(_userId: number) {
     // return this.prisma.todoItem.findMany({ where: { published: true } });
-    return this.prisma.todoItem.findMany();
+    return this.prisma.todoItem.findMany({
+      where: {
+        owner_id: _userId,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 
-  findOne(id: number) {
-    return this.prisma.todoItem.findUnique({
+  findOne(id: number, owner: number) {
+    return this.prisma.todoItem.findFirst({
       where: {
         id: id,
+        owner_id: owner,
       },
     });
   }
@@ -50,6 +58,6 @@ export class TodoItemsService {
         id: id,
         owner_id: owner_id,
       },
-    })
+    });
   }
 }
