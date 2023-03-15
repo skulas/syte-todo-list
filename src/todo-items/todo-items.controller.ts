@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { TodoItemsService } from './todo-items.service';
 import { CreateTodoItemDto } from './dto/create-todo-item.dto';
 import { UpdateTodoItemDto } from './dto/update-todo-item.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { TodoItemEntity } from './entities/todo-item.entity';
+import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { UserDto } from 'src/users/dto/user.dto';
 
 @Controller('todo-items')
 @ApiTags('todo-items')
@@ -26,8 +30,10 @@ export class TodoItemsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: TodoItemEntity, isArray: true })
-  findAll() {
+  findAll(@Req() req: any,) {
+    const user = <UserDto>req.user;
     return this.todoItemsService.findAll();
   }
 
