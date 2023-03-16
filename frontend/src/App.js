@@ -1,13 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-// import axios from "axios";
 import api from "./api"
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(token !== null);
 
   const handleLogin = async (email, password) => {
     try {
@@ -28,7 +27,10 @@ function App() {
     console.log(`Registering user with email ${email}`)    
     try {
       const response = await api.post("/register", { email, password });
+      console.log(JSON.stringify(response.status))
+      console.log(JSON.stringify(response.data))
       if (response.status === 200 || response.status === 201) {
+        // Either if created or user exists with this mail, try to login.
         handleLogin(email, password)
       }
     } catch (error) {
