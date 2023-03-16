@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function LoginPage({ onLogin }) {
+function LoginPage({ onLogin, onRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -8,6 +8,10 @@ function LoginPage({ onLogin }) {
     event.preventDefault();
     onLogin(email, password);
   };
+
+  const handleRegister = () => {
+    onRegister(email, password)
+  }
 
   return (
     <div>
@@ -32,6 +36,7 @@ function LoginPage({ onLogin }) {
         </label>
         <br />
         <button type="submit">Login</button>
+        <button onClick={() => handleRegister()}>Register</button>
       </form>
     </div>
   );

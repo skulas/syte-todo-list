@@ -12,12 +12,9 @@ function App() {
   const handleLogin = async (email, password) => {
     try {
       console.log(`Logging in with ${email}`)
-      console.log(api.defaults)
+
       const response = await api.post("/auth/login", { email, password });
       const token = response.data.access_token;
-      console.log(`Login response.data: ${JSON.stringify(response.data)}`)
-      console.log(`Login response.data.access_token: ${JSON.stringify(response.data.access_token)}`)
-      console.log(`Login token: ${token}`)
       console.log('Login successful')
       localStorage.setItem("token", token);
       setToken(token);
@@ -26,6 +23,20 @@ function App() {
       console.error(error);
     }
   };
+
+  const handleRegister = async (email, password) => {
+    console.log(`Registering user with email ${email}`)    
+    try {
+      const response = await api.post("/register", { email, password });
+      if (response.status === 200 || response.status === 201) {
+        handleLogin(email, password)
+      }
+    } catch (error) {
+      console.log(`Registration for email ${email} failed - error:`)
+      console.error(error)
+    }
+    
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -37,9 +48,9 @@ function App() {
     <Router>
       <Routes>
         {isLoggedIn ? <Route path="/" element={<HomePage token={token} onLogout={handleLogout} />} /> :
-                       <Route path="/" element={<LoginPage onLogin={handleLogin} />} />  }
+                       <Route path="/" element={<LoginPage onLogin={handleLogin} onRegister={handleRegister} />} />  }
         {isLoggedIn ? <Route path="/login" element={<HomePage token={token} onLogout={handleLogout} />} /> :
-                       <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />  }
+                       <Route path="/login" element={<LoginPage onLogin={handleLogin} onRegister={handleRegister} />} />  }
       </Routes>
     </Router>
   );
