@@ -1,0 +1,38 @@
+FROM node:17.8-alpine3.14 AS builder
+
+WORKDIR /app
+
+ENV PORT 4000
+ENV PATH /app/node_modules/.bin:$PATH
+ENV API_URL=http://localhost:3000
+
+
+COPY ./package.json .
+COPY ./package-lock.json .
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+COPY ./nginx.conf .
+
+#Stage 2
+#######################################
+#pull the nginx base image
+FROM nginx:1.21.6-alpine
+
+RUN apk update && apk add bash
+
+#copies React to the container directory
+# Set working directory to nginx resources directory
+WORKDIR /usr/share/nginx/html
+
+# Remove default nginx static resources
+RUN rm -rf ./*
+
+# Copies static resources from builder stage
+COPY --from=builder /app/build .
+COPY --from=builder /app/nginx.conf /etc/nginx/
+
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

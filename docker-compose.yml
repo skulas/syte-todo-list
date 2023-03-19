@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: /Users/ezequiellowi/dev/syte/syte-todo/backend
+      dockerfile: /Users/ezequiellowi/dev/syte/syte-todo/Dockerfile.be
+    environment:
+      DATABASE_URL: postgresql://postgres:Aa123456@db:5432/syte-todo-list
+    ports:
+      - 3000:3000
+    links:
+      - db
+    networks:
+      - backendnet
+      - frontendnet
+    command: sh ./run.sh
+
+
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Aa123456
+      POSTGRES_DB: syte-todo-list
+    volumes:
+      - /Users/ezequiellowi/dev/syte/syte-todo/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - backendnet
+    ports: 
+      - 5432:5432
+networks:
+  backendnet:
+    driver: bridge
+  frontendnet:
+    driver: bridge

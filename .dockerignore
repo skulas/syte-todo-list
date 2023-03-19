@@ -1,0 +1,13 @@
+#env files
+**/.env*
+.gitignore
+**/env.js
+
+#folders
+**/bulid
+**/node_modules
+.vscode/**
+
+
+#misc files
+README.md
