@@ -1,2 +1,50 @@
 # syte-todo-list
 A basic todo list implemented in NestJS, Prisma.io, and Vue.js
+
+## Architecture
+The solution consists of three componets _frontend_, _backend_ and _database_.
+
+## Setup
+- Download the code from the [github repo](https://github.com/skulas/syte-todo-list)<br>
+- Edit the `docker-compose.yml`
+```
+services:
+  backend:
+    build:
+      context: <full path to syte-todo repo>/backend
+      dockerfile: <full path to syte-todo repo>/Dockerfile.be
+    ...
+
+  frontend:
+    build:
+      context: <full path to syte-todo repo>/frontend
+      dockerfile: <full path to syte-todo repo>/Dockerfile.fe
+    ...
+
+  db:
+    image: postgres
+    ...
+    volumes:
+      - <some path in the host machime>/postgresql/data
+```
+- 📝 Notes
+    - The path `<some path in the host machime>/postgresql` must exist and be empty, the `data` directory is auto generated.
+    - Make sure ports `5432`, `4000` and `3000` are free, as they are used by the db, fe and be respectively.
+    - Make sure you don't have a postgres container up (as it might be using port `5432`)
+- 🚧 Build 🚧
+    - Change directory to the root of `syte-todo` repo.
+    - Build the docker images using docker compose:
+    `docker-compose build`
+    - Run the project: `docker-compose up`
+
+## Frontend
+Navigate to `localhost:4000`<br>
+Super advanced UI, from the best designers in Italy.<br>
+Register / Login using email & password.<br>
+Create tasks with name or just checkboxes, you are free!<br>
+Tasks are saved as you go.<br>
+Click logout when you are done.
+
+## Backend
+You can browse the APIs by visiting `localhost:4000/api`<br>
+You can try the APIs using postman by importing the collection in the `backend` directory of the repo.
