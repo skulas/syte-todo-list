@@ -40,13 +40,14 @@ services:
     - The path `<some path in the host machime>/postgresql` must exist and be empty, the `data` directory is auto generated.
     - Make sure ports `5432`, `4000` and `3000` are free, as they are used by the db, fe and be respectively.
     - Make sure you don't have a postgres container up (as it might be using port `5432`)
-- 🚧 Build 🚧
+- 🚧 Build 🚧<br>
+  Open a terminal
     - Change directory to the root of `syte-todo` repo.
-    - Build the docker images using docker compose:
-    `docker-compose build`
-    - Run the project: `docker-compose up`
     - You may be required to allow execution of the `run` script.<br>
-    In a terminal window in the repo directory run `chmod +x ./run.sh`
+    In the repo/build directory run `chmod +x ./run.sh`
+    - Build the docker images using docker compose:
+    `docker-compose build --build-arg DB_HOST=db`
+    - Run the project: `docker-compose up`
 
 ## Frontend
 Navigate to `localhost:4000`<br>
