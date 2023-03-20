@@ -16,6 +16,18 @@ services:
       - frontendnet
     command: sh ./run.sh
 
+  frontend:
+    build:
+      context: /Users/ezequiellowi/dev/syte/syte-todo/frontend
+      dockerfile: /Users/ezequiellowi/dev/syte/syte-todo/Dockerfile.fe
+    environment:
+      PORT: 4000
+      API_URL: http://backend:3000
+    ports:
+      - 4000:4000
+    networks:
+      - frontendnet
+
 
     depends_on:
       - db
