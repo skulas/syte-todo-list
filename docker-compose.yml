@@ -27,8 +27,6 @@ services:
       - 4000:4000
     networks:
       - frontendnet
-
-
     depends_on:
       - db
   db:
