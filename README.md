@@ -2,7 +2,16 @@
 A basic todo list implemented in NestJS, Prisma.io, and Vue.js
 
 ## Architecture
-The solution consists of three componets _frontend_, _backend_ and _database_.
+- Three components<br>
+Managed within a monolitic repository
+    - _frontend_<Br>
+    A [react](https://react.dev/) powered web application.
+    - _backend_<br>
+    The backend is writen in [NestJS](https://nestjs.com/).
+    - _database_<br>
+    PGSQL.<br>
+    The database objects are wrapped by [prisma](https://www.prisma.io/) ORMs<br>
+    The migrations folder is located in `<repo root>/backend/prisma/migrations`
 
 ## Setup
 - Download the code from the [github repo](https://github.com/skulas/syte-todo-list)<br>
@@ -36,6 +45,8 @@ services:
     - Build the docker images using docker compose:
     `docker-compose build`
     - Run the project: `docker-compose up`
+    - You may be required to allow execution of the `run` script.<br>
+    In a terminal window in the repo directory run `chmod +x ./run.sh`
 
 ## Frontend
 Navigate to `localhost:4000`<br>
