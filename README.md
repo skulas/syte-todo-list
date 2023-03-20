@@ -1,5 +1,5 @@
 # syte-todo-list
-A basic todo list implemented in NestJS, Prisma.io, and Vue.js
+A basic todo list implemented in NestJS, Prisma.io, and React.js
 
 ## Architecture
 - Three components<br>
