@@ -19,7 +19,7 @@ COPY ./nginx.conf .
 #Stage 2
 #######################################
 #pull the nginx base image
-FROM nginx:1.21.6-alpine
+FROM nginx:1.24-alpine
 
 RUN apk update && apk add bash
 
